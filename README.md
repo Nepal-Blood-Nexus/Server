@@ -1,6 +1,6 @@
 # Nepal Blood Nexus (NBN) - Server Repository
 
-Welcome to the Server repository of Nepal Blood Nexus (NBN)! This repository houses the server-side codebase for the NBN project, developed using Node.js, Express, and MongoDB.
+🚀🚀 Welcome to the Server repository of Nepal Blood Nexus (NBN)! This repository houses the server-side codebase for the NBN project, developed using Node.js, Express, and MongoDB. 🚀🚀
 
 ## Table of Contents
 
@@ -85,6 +85,6 @@ Thank you for contributing to Nepal Blood Nexus (NBN)!
 
 For more information about the overall NBN project, visit the main repository: [NBN Main Repository](link-to-main-repo).
 
-Replace `[License Name]` with the specific license you choose for your project. If you haven't selected a license yet, you can include the license text directly in the README or refer to an external LICENSE.md file.
+Replace `MIT` with the specific license you choose for your project. If you haven't selected a license yet, you can include the license text directly in the README or refer to an external LICENSE.md file.
 
-Customize this template according to your specific project structure and requirements.
+
