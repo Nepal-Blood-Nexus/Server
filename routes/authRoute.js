@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 const {
-  authUser,
+  login,
   registerUser,
   getUserProfile,
   updateUserProfile,
@@ -13,11 +13,14 @@ const {
   renewToken,
   getUserAddress,
 } = require("../controllers/authController");
+
 const { protect, admin } = require("../middlewares/authMiddleware");
 
 router.route("/").post(registerUser);
+
 router.put("/update-notification-token", protect, updateUser);
-router.post("/login", authUser);
+
+router.post("/login", login);
 
 router
   .route("/:id")

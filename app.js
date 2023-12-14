@@ -9,6 +9,11 @@ const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const cors = require("cors");
 const AppError = require("./modules/appError");
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 app.use(compression());
 app.use(express.urlencoded({ extended: false }));
@@ -34,6 +39,7 @@ app.use("/api", limiter);
 
 // const homeRouter = require("./routes/homeRoutes");
 const authRouter = require("./routes/authRoute")
+const adminRouter = require("./routes/adminRoute")
 // const apiRoutes = require("./routes/apiRoutes")
 // const publicRouter = require("./routes/publicRoutes")
 // const sastoRouter = require("./routes/scrapPetFood")
@@ -42,6 +48,7 @@ app.use("/static", express.static(path.join(__dirname, "static")));
 
 // app.use("/api/scrap", homeRouter);
 app.use("/api/auth",authRouter)
+app.use("/api/admin",adminRouter)
 // app.use("/api/endpoints",apiRoutes)
 // app.use("/api/public",publicRouter)
 // app.use("/api/petfood",sastoRouter)

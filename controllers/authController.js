@@ -5,18 +5,13 @@ const User = require("../models/user");
 // @desc    Auth user & get token
 // @route   POST /api/users/login
 // @access  Public
-const authUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email });
+const login = asyncHandler(async (req, res) => {
+  const { email, password, phone } = req.body;
+  const user = await User.findOne({ email })  || await User.findOne({ phone });
   if (user && (await user.matchPassword(password))) {
     return res.status(200).json({
       token: generateToken(user._id),
-      user: {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        isAdmin: user.isAdmin,
-      },
+      user,
       success: true,
       error: "",
     });
@@ -39,7 +34,7 @@ const registerUser = asyncHandler(async (req, res) => {
     });
   }
   const user = await User.create({
-    username,
+    fullname,
     email,
     password,
     phone
@@ -146,9 +141,8 @@ const getUserAddress = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
-  authUser,
+  login,
   registerUser,
-
   getUsers,
   deleteUser,
   getUserById,
