@@ -33,7 +33,7 @@ const addAdmin = asyncHandler(async (req, res) => {
       error: "Admin already exists",
     });
   }
-  const user = await User.create({
+  const user = await Admin.create({
     fullname,
     email,
     password,
@@ -57,7 +57,7 @@ const addAdmin = asyncHandler(async (req, res) => {
 // @route   GET /api/users
 // @access  Private/Admin
 const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({});
+  const users = await Admin.find({});
   res.json(users);
 });
 

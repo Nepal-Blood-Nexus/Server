@@ -8,7 +8,7 @@ const {
 
 const { protect, admin } = require("../middlewares/authMiddleware");
 
-router.route("/").post(protect,admin,addAdmin);
+router.route("/").post(addAdmin);
 
 // router.put("/update-notification-token", protect, updateUser);
 
