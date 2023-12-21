@@ -95,19 +95,31 @@ const getUserById = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
+  const step = req.query.step;
 
   if (user) {
-    user.name = req.body.name || user.name;
-    user.email = req.body.email || user.email;
-    user.isAdmin = req.body.isAdmin || user.isAdmin;
-    user.notification_token = req.body.notification_token;
-    const updatedUser = await user.save();
-    return res.status(201).json({
+    if(step==1){
+      const _profile = {blood_group,bp,age,weight} = req.body;
+      user.profile.push(_profile);
+      const _updatedUser = await user.save();
+      return res.status(201).json({
       success: true,
       error: "",
-      user: updateUser,
-      token: generateToken(updatedUser._id),
+      user: _updatedUser,
+      token: generateToken(_updatedUser._id),
     });
+
+      
+    }
+   
+    
+    // const _updatedUser = await user.save();
+    // return res.status(201).json({
+    //   success: true,
+    //   error: "",
+    //   user: _updatedUser,
+    //   token: generateToken(_updatedUser._id),
+    // });
   } else {
     res.status(404);
     throw new Error("User not found");

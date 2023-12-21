@@ -26,7 +26,7 @@ router
   .route("/:id")
   .delete(protect, admin, deleteUser)
   .get(protect, admin, getUserById)
-  .put(protect, admin, updateUser);
+  .post(protect, updateUser);
 
 router.post("/renew-token", protect, renewToken);
 router.get("/get-addresses", protect, getUserAddress);
