@@ -34,7 +34,7 @@ const limiter = rateLimit({
 });
 
 app.use(cors());
-app.use("/api", limiter);
+
 
 
 // const homeRouter = require("./routes/homeRoutes");
