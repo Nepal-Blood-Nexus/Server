@@ -4,8 +4,6 @@ const router = express.Router();
 const {
   login,
   registerUser,
-  getUserProfile,
-  updateUserProfile,
   getUsers,
   deleteUser,
   getUserById,
@@ -23,10 +21,11 @@ router.put("/update-notification-token", protect, updateUser);
 router.post("/login", login);
 
 router
-  .route("/:id")
-  .delete(protect, admin, deleteUser)
-  .get(protect, admin, getUserById)
-  .post(protect, updateUser);
+  .route("/profile")
+  .post(protect, updateUser)
+  .get(protect,getUserById);
+
+
 
 router.post("/renew-token", protect, renewToken);
 router.get("/get-addresses", protect, getUserAddress);
