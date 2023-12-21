@@ -22,7 +22,7 @@ const userSchema = mongoose.Schema({
     },
     profile:[
         {
-            blodd_group: {
+            blood_group: {
                 type:String,
             },
             age: {
