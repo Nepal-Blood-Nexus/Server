@@ -82,7 +82,13 @@ const deleteUser = asyncHandler(async (req, res) => {
 const getUserById = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id).select("-password");
   if (user) {
-    res.status(200).json(user);
+    res.status(201).json({
+      success: true,
+      error: "",
+      user,
+      token: generateToken(user._id),
+    })
+ 
   } else {
     res.status(404);
     throw new Error("User not found");
