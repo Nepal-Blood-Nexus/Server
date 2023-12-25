@@ -63,6 +63,9 @@ const userSchema = mongoose.Schema({
     ],
     last_location:{
         type:String
+    },
+    notification_token:{
+      type:String
     }
   },
   {

@@ -115,8 +115,9 @@ const updateUser = asyncHandler(async (req, res) => {
     });
     }
     if(step==0){
-      const {cordinates} = req.body;
+      const {cordinates,notification_token} = req.body;
       user.last_location = cordinates;
+      user.notification_token = notification_token;
       const _updatedUser = await user.save();
       return res.status(201).json({
       success: true,
