@@ -19,10 +19,10 @@ const saveBloodRequest = asyncHandler(async (req, res) => {
                 const distanceFromPreferedLocation = calculateDistance(cordinates, obj.last_location);
                 // const distanceOfDonorFromPreferedLocation = calculateDistance(req.user.last_location, obj.last_location);
                 notification_tokens.push(obj.notification_token);
-                return { fullname, age, weight, distanceFromPreferedLocation, distanceFromuserLocation, donorId:_id };
+                return { fullname, age, weight, distanceFromPreferedLocation, distanceFromuserLocation, donorId:_id, phone:obj.phone};
               }).sort((a,b)=>b.distanceFromPreferedLocation - a.distanceFromPreferedLocation);
               
-            res.json({donors}).status(201)
+            res.json({donors: donors}).status(201)
             await sendNotification(notification_tokens,`Requested by: ${req.user.fullname}, Emergency: ${emergency}, Location: ${location}`)
         }else{
             res.json({msg: "No Donors found at the moment"}).status(401)
@@ -41,10 +41,10 @@ const saveBloodRequest = asyncHandler(async (req, res) => {
                     const distanceFromPreferedLocation = calculateDistance(cordinates, obj.last_location);
                     const distanceOfDonorFromPreferedLocation = calculateDistance(req.user.last_location, obj.last_location);
                 await sendNotification(obj.notification_token,`Requested by: ${req.user.fullname}, Emergency: ${emergency}, Location: ${location}, Distance: ${distanceOfDonorFromPreferedLocation}`)
-                    return { fullname, age, weight, distanceFromPreferedLocation, distanceFromuserLocation, donorId:_id };
+                    return { fullname, age, weight, distanceFromPreferedLocation, distanceFromuserLocation, donorId:_id,phone:obj.phone };
                   }).sort((a,b)=>b.distanceFromPreferedLocation - a.distanceFromPreferedLocation);
                   
-                res.json({donors}).status(201)
+                res.json({donors: donors}).status(201)
             }else{
                 res.json({msg: "No Donors found at the moment"}).status(401)
             }
