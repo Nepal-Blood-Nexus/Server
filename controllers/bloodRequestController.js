@@ -34,17 +34,20 @@ const saveBloodRequest = asyncHandler(async (req, res) => {
             console.log(gender);
             const _donors = await User.find({'profile.blood_group':blood_group,'_id': { $ne: initiator },"profile.gender":gender});
             if(_donors.length>0){
-                const donors = _donors.map(async(obj) => {
+                const donors = _donors.map((obj) => {
                     const { fullname, profile,_id } = obj;
                     const { age, weight } = profile[0];
                     const distanceFromuserLocation = calculateDistance(cordinates, req.user.last_location);
                     const distanceFromPreferedLocation = calculateDistance(cordinates, obj.last_location);
-                    const distanceOfDonorFromPreferedLocation = calculateDistance(req.user.last_location, obj.last_location);
-                await sendNotification(obj.notification_token,`Requested by: ${req.user.fullname}, Emergency: ${emergency}, Location: ${location}, Distance: ${distanceOfDonorFromPreferedLocation}`)
-                    return { fullname, age, weight, distanceFromPreferedLocation, distanceFromuserLocation, donorId:_id,phone:obj.phone };
+                    // const distanceOfDonorFromPreferedLocation = calculateDistance(req.user.last_location, obj.last_location);
+                    notification_tokens.push(obj.notification_token);
+                    return { fullname, age, weight, distanceFromPreferedLocation, distanceFromuserLocation, donorId:_id, phone:obj.phone};
                   }).sort((a,b)=>b.distanceFromPreferedLocation - a.distanceFromPreferedLocation);
+
                   
                 res.json({donors: donors}).status(201)
+            await sendNotification(notification_tokens,`Requested by: ${req.user.fullname}, Emergency: ${emergency}, Location: ${location}`)
+
             }else{
                 res.json({msg: "No Donors found at the moment"}).status(401)
             }
