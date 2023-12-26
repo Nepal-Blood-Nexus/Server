@@ -16,8 +16,9 @@ const saveBloodRequest = asyncHandler(async (req, res) => {
                 const distanceFromuserLocation = calculateDistance(cordinates, req.user.last_location);
                 const distanceFromPreferedLocation = calculateDistance(cordinates, obj.last_location);
                 return { fullname, age, weight, distanceFromPreferedLocation, distanceFromuserLocation, donorId:_id };
-              });
+              }).sort((a,b)=>b.distanceFromPreferedLocation - a.distanceFromPreferedLocation);
               
+            
             res.json({donors}).status(201)
         }else{
             res.send("No Donors found at the moment")
@@ -35,7 +36,7 @@ const saveBloodRequest = asyncHandler(async (req, res) => {
                     const distanceFromuserLocation = calculateDistance(cordinates, req.user.last_location);
                     const distanceFromPreferedLocation = calculateDistance(cordinates, obj.last_location);
                     return { fullname, age, weight, distanceFromPreferedLocation, distanceFromuserLocation, donorId:_id };
-                  });
+                  }).sort((a,b)=>b.distanceFromPreferedLocation - a.distanceFromPreferedLocation);
                   
                 res.json({donors}).status(201)
             }else{
