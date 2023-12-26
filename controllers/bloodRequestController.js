@@ -25,7 +25,7 @@ const saveBloodRequest = asyncHandler(async (req, res) => {
             res.json({donors}).status(201)
             await sendNotification(notification_tokens,`Requested by: ${req.user.fullname}, Emergency: ${emergency}, Location: ${location}`)
         }else{
-            res.send("No Donors found at the moment")
+            res.json({msg: "No Donors found at the moment"}).status(401)
         }
     }else{
 
@@ -46,10 +46,10 @@ const saveBloodRequest = asyncHandler(async (req, res) => {
                   
                 res.json({donors}).status(201)
             }else{
-                res.send("No DOnors found at the moment")
+                res.json({msg: "No Donors found at the moment"}).status(401)
             }
         }else{
-            res.send("Failed to create a blood request")
+            res.json({msg: "Failed"}).status(401)
         }
     }
 
