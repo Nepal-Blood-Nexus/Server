@@ -104,7 +104,7 @@ const updateUser = asyncHandler(async (req, res) => {
 
   if (user) {
     if(step==1){
-      const _profile = {blood_group,bp,age,weight} = req.body;
+      const _profile = {blood_group,bp,age,weight,gender} = req.body;
       user.profile.push(_profile);
       const _updatedUser = await user.save();
       return res.status(201).json({
@@ -126,6 +126,20 @@ const updateUser = asyncHandler(async (req, res) => {
       token: generateToken(_updatedUser._id),
     });
     }
+
+    if(step==2){
+      const _profile = {age,weight,gender} = req.body;
+      user.profile[0] = {age,weight,gender};
+      const _updatedUser = await user.save();
+      return res.status(201).json({
+      success: true,
+      error: "",
+      user: _updatedUser,
+      token: generateToken(_updatedUser._id),
+    });
+    }
+
+    
 
     
    

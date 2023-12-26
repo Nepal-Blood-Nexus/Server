@@ -38,22 +38,16 @@ const limiter = rateLimit({
 app.use(cors());
 
 
-
-// const homeRouter = require("./routes/homeRoutes");
 const authRouter = require("./routes/authRoute")
 const adminRouter = require("./routes/adminRoute")
-// const apiRoutes = require("./routes/apiRoutes")
-// const publicRouter = require("./routes/publicRoutes")
-// const sastoRouter = require("./routes/scrapPetFood")
+const bloodRequestRouter = require("./routes/bloodRequestRoute")
+
 
 app.use("/static", express.static(path.join(__dirname, "static")));
 
-// app.use("/api/scrap", homeRouter);
 app.use("/api/auth",authRouter)
 app.use("/api/admin",adminRouter)
-// app.use("/api/endpoints",apiRoutes)
-// app.use("/api/public",publicRouter)
-// app.use("/api/petfood",sastoRouter)
+app.use("/api/request",bloodRequestRouter)
 
 
 // app.all("*", (req, res, next) => {

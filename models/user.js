@@ -25,6 +25,9 @@ const userSchema = mongoose.Schema({
             blood_group: {
                 type:String,
             },
+            gender: {
+              type:String,
+          },
             age: {
                 type:String,
             },
