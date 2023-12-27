@@ -15,7 +15,7 @@ const saveBloodRequest = asyncHandler(async (req, res) => {
             const donors = _donors.map((obj) => {
                 const { fullname, profile,_id } = obj;
                 const { age, weight } = profile[0];
-                const distanceFromuserLocation = calculateDistance(cordinates, req.user.last_location);
+                const distanceFromuserLocation = calculateDistance(obj.last_location, req.user.last_location);
                 const distanceFromPreferedLocation = calculateDistance(cordinates, obj.last_location);
                 // const distanceOfDonorFromPreferedLocation = calculateDistance(req.user.last_location, obj.last_location);
                 notification_tokens.push(obj.notification_token);
@@ -37,7 +37,7 @@ const saveBloodRequest = asyncHandler(async (req, res) => {
                 const donors = _donors.map((obj) => {
                     const { fullname, profile,_id } = obj;
                     const { age, weight } = profile[0];
-                    const distanceFromuserLocation = calculateDistance(cordinates, req.user.last_location);
+                    const distanceFromuserLocation = calculateDistance(obj.last_location, req.user.last_location);
                     const distanceFromPreferedLocation = calculateDistance(cordinates, obj.last_location);
                     // const distanceOfDonorFromPreferedLocation = calculateDistance(req.user.last_location, obj.last_location);
                     notification_tokens.push(obj.notification_token);
