@@ -58,6 +58,31 @@ const saveBloodRequest = asyncHandler(async (req, res) => {
 
 });
 
+
+const getBloodRequests = asyncHandler(async(req,res)=>{
+
+    try {
+        const status = req.query.status;
+        let allRequests;
+        if(status){
+            allRequests = await BloodRequest.find({status: status}).populate('initiator').sort({datefield: -1}).exec();
+        }else{
+
+            allRequests = await BloodRequest.find({}).populate('initiator').sort({datefield: -1}).exec();
+        }
+        console.log(allRequests)
+        res.json(allRequests);
+        
+    } catch (error) {
+        console.log(error)
+    }
+
+
+
+
+})
+
 module.exports = {
   saveBloodRequest,
+  getBloodRequests
 };
