@@ -6,8 +6,8 @@ const User = require("../models/user");
 // @route   POST /api/users/login
 // @access  Public
 const login = asyncHandler(async (req, res) => {
-  const { email, password, phone } = req.body;
-  const user = await User.findOne({ email })  || await User.findOne({ phone });
+  const {password, phone } = req.body;
+  const user = await User.findOne({ phone });
   if (user && (await user.matchPassword(password))) {
     return res.status(200).json({
       token: generateToken(user._id),

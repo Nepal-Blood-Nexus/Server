@@ -31,7 +31,7 @@ const saveBloodRequest = asyncHandler(async (req, res) => {
 
         const _request = await BloodRequest.create({initiator,gender,cordinates,location,blood_group});
         if(_request){
-            console.log(gender);
+            // console.log(gender);
             const _donors = await User.find({'profile.blood_group':blood_group,'_id': { $ne: initiator },"profile.gender":gender});
             if(_donors.length>0){
                 const donors = _donors.map((obj) => {
@@ -70,7 +70,7 @@ const getBloodRequests = asyncHandler(async(req,res)=>{
 
             allRequests = await BloodRequest.find({}).populate('initiator').sort({datefield: -1}).exec();
         }
-        console.log(allRequests)
+        // console.log(allRequests)
         res.json(allRequests);
         
     } catch (error) {
@@ -90,7 +90,7 @@ const closeBloodRequest = asyncHandler(async(req,res)=>{
         let allRequests;
         const result = await BloodRequest.deleteOne({_id: requestid});
         if(result){
-            console.log(result)
+            // console.log(result)
             // res.json(allRequests);
         }
         
