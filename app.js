@@ -42,6 +42,7 @@ const authRouter = require("./routes/authRoute")
 const adminRouter = require("./routes/adminRoute")
 const bloodRequestRouter = require("./routes/bloodRequestRoute")
 const placeRouter = require("./routes/placesRoute")
+const chatRouter = require("./routes/chatRoute")
 
 
 app.use("/static", express.static(path.join(__dirname, "static")));
@@ -50,6 +51,9 @@ app.use("/api/auth",authRouter)
 app.use("/api/admin",adminRouter)
 app.use("/api/request",bloodRequestRouter)
 app.use("/api/places",placeRouter)
+app.use("/api/places",placeRouter)
+app.use("/api/chat", chatRouter)
+
 
 
 

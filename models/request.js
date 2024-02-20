@@ -30,6 +30,18 @@ const bloodRequestSchema = mongoose.Schema({
         type:String,
         required:true
     },
+    chats:[
+      {
+        user:{
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+        chat:{
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Chat",
+        }
+    }],
+
     status: {
         type: String,
         enum: ["open", "fulfilled"],

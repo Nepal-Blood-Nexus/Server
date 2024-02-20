@@ -1,6 +1,7 @@
 const { default: axios } = require("axios")
 
 module.exports.sendNotification = async (userToken,message) => {
+    console.log("sending notification", userToken)
     axios.post("https://fcm.googleapis.com/fcm/send",
         {
             "registration_ids": userToken,

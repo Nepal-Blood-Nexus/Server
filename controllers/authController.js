@@ -7,6 +7,7 @@ const User = require("../models/user");
 // @access  Public
 const login = asyncHandler(async (req, res) => {
   const {password, phone } = req.body;
+  console.log(req.body)
   const user = await User.findOne({ phone });
   if (user && (await user.matchPassword(password))) {
     return res.status(200).json({
