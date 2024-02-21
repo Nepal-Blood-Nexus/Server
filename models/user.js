@@ -36,30 +36,46 @@ const userSchema = mongoose.Schema({
             weight:{
                 type:String,
             },
-            accupunture:{
-                type:Boolean,
+            rbc:{
+              type:String,
             },
-            wellness:{
-                type: Boolean,
+            hct:{
+              type:String,
             },
-            antiboitics:{
-                type:Boolean,
+            rbc:{
+              type:String,
+            },
+            mcv:{
+              type:String
+            },
+            mch:{
+              type: String,
+            },
+            mchc:{
+              type:String
+            },
+            glucose:{
+              type:String,
+            },
+            creatinine:{
+              type: String
+            },
+            bun:{
+              type:String
+            },
+            protien:{
+              type:String
+            },
+            albumin:{
+              type:String
+            },
+            blobulin:{
+              type: String
             },
             bp:{
                 type:String,
             },
-            diabetes:{
-                type:Boolean,
-            },
-            hepatitis_jaundice:{
-                type:Boolean
-            },
-            pregnant:{
-                type:Boolean,
-            },
-            tatto:{
-                type:Boolean,
-            }
+           
 
         }
     ],

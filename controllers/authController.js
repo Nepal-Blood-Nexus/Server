@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const generateToken = require("../modules/token");
 const User = require("../models/user");
+const { generateInsights } = require("../utils/insightsalgo");
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -128,15 +129,44 @@ const updateUser = asyncHandler(async (req, res) => {
     }
 
     if(step==2){
-      const _profile = {age,weight,gender} = req.body;
-      user.profile[0] = {age,weight,gender};
+      const {
+        bp,
+        rbc,
+        hct,
+        mcv,
+        mch,
+        mchc,
+        glucose,
+        creatinine,
+        bun, 
+        protien,
+        albumin,
+        blobulin,
+      
+      } = req.body;
+      user.profile.push({
+        bp,
+        rbc,
+        hct,
+        mcv,
+        mch,
+        mchc,
+        glucose,
+        creatinine,
+        bun, 
+        protien,
+        albumin,
+        blobulin,
+      })
       const _updatedUser = await user.save();
-      return res.status(201).json({
+      
+      res.status(201).json({
       success: true,
       error: "",
       user: _updatedUser,
       token: generateToken(_updatedUser._id),
     });
+    return generateInsights(_updatedUser);
     }
 
     
@@ -156,6 +186,8 @@ const updateUser = asyncHandler(async (req, res) => {
     throw new Error("User not found");
   }
 });
+
+
 
 const renewToken = asyncHandler(async (req, res) => {
   const UserRequested = req.user;
