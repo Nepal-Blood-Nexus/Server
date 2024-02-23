@@ -35,10 +35,15 @@ const intializeChat = asyncHandler(async (req, res) => {
             console.log(_request);
             await _request.save();
 
-            res.status(200).json({chat:_chat})
+            res.status(200).json({_chat})
             await sendNotification(_request.initiator.notification_token,"New Chat")
-            }else{
-                res.status(400).send({msg: "Already initialized"})
+            }
+            else if(_request.chats.length>0){
+                    const chat = await Chat.find({requestid: requestid, usera: req.user._id});
+                    res.status(200).json({chat})
+            }
+            else{
+                res.status(400).send({msg: "Error"})
             }
         });
 
