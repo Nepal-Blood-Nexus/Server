@@ -35,7 +35,7 @@ const intializeChat = asyncHandler(async (req, res) => {
             console.log(_request);
             await _request.save();
 
-            res.status(200).json({_chat})
+            res.status(200).json({chat:_chat})
             await sendNotification(_request.initiator.notification_token,"New Chat")
             }
             else if(_request.chats.length>0){
