@@ -60,7 +60,7 @@ const getMyChats = asyncHandler(async(req,res)=>{
     let allchats = [];
     chatsc.forEach((chat) => {
         let recipentName = chat.usera._id.toString() === req.user._id.toString() ? chat.userb.fullname : chat.usera.fullname;
-        allchats = [{...chat._doc, recipentName}]
+        allchats.push({...chat._doc, recipentName});
       });
     
       console.log(allchats)
