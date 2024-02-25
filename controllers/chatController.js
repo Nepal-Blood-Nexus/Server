@@ -24,7 +24,7 @@ const intializeChat = asyncHandler(async (req, res) => {
             _chat.usera = userid;
             _chat.userb = _request.initiator;
             _chat.message = [..._chat.message, chat];
-            _chat.recipentName = _request.initiator;
+            _chat.recipentName = _request.initiator.fullname;
            
             await _chat.save();
 
@@ -53,9 +53,10 @@ const intializeChat = asyncHandler(async (req, res) => {
 
 const getMyChats = asyncHandler(async(req,res)=>{
     const userid = req.user._id;
-    const chats = await Chat.find({usera: userid}) || await Chat.find({userb: userid});
-    console.log(chats);
-    res.status(200).json({chats})
+    const chatsa = await Chat.find({usera: userid});
+    const chatsb = await Chat.find({userb: userid});
+    const chatsc = Array([]).concat(chatsa,chatsb);s
+    res.status(200).json({chats: chatsc})
 })
 
 
