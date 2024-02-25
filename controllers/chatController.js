@@ -55,7 +55,7 @@ const getMyChats = asyncHandler(async(req,res)=>{
     const userid = req.user._id;
     const chatsa = await Chat.find({usera: userid});
     const chatsb = await Chat.find({userb: userid});
-    const chatsc = Array([]).concat(chatsa,chatsb);
+    const chatsc = chatsa.concat(chatsb);
     res.status(200).json({chats: chatsc})
 })
 
