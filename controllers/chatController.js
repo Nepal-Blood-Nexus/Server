@@ -3,6 +3,7 @@ const BloodRequest = require("../models/request");
 const User = require("../models/user");
 const Chat = require("../models/chat");
 const { sendNotification } = require("../utils/sendNotification");
+const {pusher} = require("../utils/pusher");
 
 
 const intializeChat = asyncHandler(async (req, res) => {
@@ -68,9 +69,24 @@ const getMyChats = asyncHandler(async(req,res)=>{
     res.status(200).json({chats: allchats})
 })
 
+const sendMessage = asyncHandler(async(req,res)=>{
+    const {msg, chatid} = req.body;
+    const _chat = await Chat.findById(chatid);
+    let chat={};
+    chat.content = msg;
+    chat.author = req.user._id;
+    chat.type = "text";
+    _chat.message = [..._chat.message, chat];
+    await _chat.save();
+    res.status(200).send("sent");
+    pusher.trigger('main','chat',chat);
+
+});
+
 
 
 module.exports = {
   intializeChat,
-  getMyChats
+  getMyChats,
+  sendMessage
 };
