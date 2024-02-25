@@ -56,12 +56,16 @@ const getMyChats = asyncHandler(async(req,res)=>{
     const chatsa = await Chat.find({usera: userid}).populate('userb')
     const chatsb = await Chat.find({userb: userid}).populate('usera');
     const chatsc = chatsa.concat(chatsb);
+    let allchats = [];
     chatsc.forEach((chat) => {
-        chat.recipientName = chat.usera._id.toString() === req.user._id.toString() ? chat.userb.fullname : chat.usera.fullname;
+        let recipientName = chat.usera._id.toString() === req.user._id.toString() ? chat.userb.fullname : chat.usera.fullname;
+        allchats = [{...chat._doc, recipientName}]
       });
+    
+      console.log(allchats)
 
     // let recipentName = chat.usera._id.toString() === req.user._id.toString() ? chat.userb.fullname : chat.usera.fullname;
-    res.status(200).json({chats: chatsc})
+    res.status(200).json({chats: allchats})
 })
 
 

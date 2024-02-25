@@ -64,6 +64,7 @@ const getBloodRequests = asyncHandler(async(req,res)=>{
     try {
         const status = req.query.status;
         let allRequests;
+        
         if(status){
             allRequests = await BloodRequest.find({status: status}).populate('initiator').sort({date: -1}).exec();
         }else{
