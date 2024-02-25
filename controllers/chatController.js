@@ -39,7 +39,7 @@ const intializeChat = asyncHandler(async (req, res) => {
             await sendNotification(_request.initiator.notification_token,"New Chat")
             }
             else if(_request.chats.length>0){
-                    const chat = await Chat.find({requestid: requestid, usera: req.user._id});
+                    const chat = await Chat.findOne({requestid: requestid, usera: req.user._id});
                     res.status(200).json({chat})
             }
             else{
