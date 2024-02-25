@@ -59,8 +59,8 @@ const getMyChats = asyncHandler(async(req,res)=>{
     const chatsc = chatsa.concat(chatsb);
     let allchats = [];
     chatsc.forEach((chat) => {
-        let recipientName = chat.usera._id.toString() === req.user._id.toString() ? chat.userb.fullname : chat.usera.fullname;
-        allchats = [{...chat._doc, recipientName}]
+        let recipentName = chat.usera._id.toString() === req.user._id.toString() ? chat.userb.fullname : chat.usera.fullname;
+        allchats = [{...chat._doc, recipentName}]
       });
     
       console.log(allchats)
