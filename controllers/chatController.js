@@ -41,7 +41,7 @@ const intializeChat = asyncHandler(async (req, res) => {
             }
             else if(_request.chats.length>0){
                     const chat = await Chat.findOne({requestid: requestid, usera: req.user._id}).populate(['usera','userb'])
-                    let recipentName = chat.usera._id == req.user._id ? chat.userb.fullname : chat.usera.fullname;
+                    let recipentName = chat.usera._id.toString() === req.user._id.toString() ? chat.userb.fullname : chat.usera.fullname;
                     res.status(200).json({chat:{...chat._doc, recipentName}})
             }
             else{
