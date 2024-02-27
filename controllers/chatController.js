@@ -60,7 +60,7 @@ const intializeChat = asyncHandler(async (req, res) => {
 
 const getMyChats = asyncHandler(async (req, res) => {
     // const userid = req.user._id;
-    const chat = await Chat.findOne({
+    const chat = await Chat.find({
         $or: [
             {  usera: req.user._id },
             {  userb: req.user._id }
