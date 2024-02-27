@@ -14,8 +14,8 @@ const intializeChat = asyncHandler(async (req, res) => {
     const _request = await BloodRequest.findById().populate("initiator")
     
     const bloodRequest = await BloodRequest.findOne({
-        _id: mongoose.Schema.ObjectId(requestid),
-        'chats.user': mongoose.Schema.ObjectId(userid)
+        _id:  new mongoose.Types.ObjectId(requestid),
+        'chats.user': new mongoose.Types.ObjectId(userid)
     })
     .populate({
         path: 'chats.user',
