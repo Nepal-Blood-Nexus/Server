@@ -4,6 +4,7 @@ const User = require("../models/user");
 const Chat = require("../models/chat");
 const { sendNotification } = require("../utils/sendNotification");
 const { pusher } = require("../utils/pusher");
+const { default: mongoose } = require("mongoose");
 
 
 const intializeChat = asyncHandler(async (req, res) => {
