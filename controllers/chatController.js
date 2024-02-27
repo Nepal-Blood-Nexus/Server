@@ -59,11 +59,11 @@ const intializeChat = asyncHandler(async (req, res) => {
 
 
 const getMyChats = asyncHandler(async (req, res) => {
-    const userid = req.user._id;
+    // const userid = req.user._id;
     const chat = await Chat.findOne({
         $or: [
-            { requestid: requestid, usera: req.user._id },
-            { requestid: requestid, userb: req.user._id }
+            {  usera: req.user._id },
+            {  userb: req.user._id }
         ]
     }).populate(['usera', 'userb','requestid']);
 
