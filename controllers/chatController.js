@@ -42,12 +42,19 @@ const intializeChat = asyncHandler(async (req, res) => {
     }
     else if (_request.chats.length > 0) {
         // const chat = await Chat.findOne({requestid: requestid, usera: req.user._id}).populate(['usera','userb'])
-        const chat = await Chat.findOne({
+        const chat = await Chat.find({
             $or: [
-                { requestid: requestid, usera: req.user._id },
-                { requestid: requestid, userb: req.user._id }
+                {  usera: req.user._id },
+                {  userb: req.user._id }
             ]
-        }).populate(['usera', 'userb','requestid']);
+        }).populate(['usera', 'userb']).populate({
+            path: 'requestid',
+            populate: {
+                path: 'initiator',
+                model: 'User'
+            }
+        });
+    
         let recipentName = chat.usera._id.toString() === req.user._id.toString() ? chat.userb.fullname : chat.usera.fullname;
         res.status(200).json({ chat: { ...chat._doc, recipentName } })
     }
