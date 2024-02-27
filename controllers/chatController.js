@@ -65,7 +65,13 @@ const getMyChats = asyncHandler(async (req, res) => {
             {  usera: req.user._id },
             {  userb: req.user._id }
         ]
-    }).populate(['usera', 'userb','requestid']);
+    }).populate(['usera', 'userb']).populate({
+        path: 'requestid',
+        populate: {
+            path: 'initiator',
+            model: 'User'
+        }
+    });
 
     // const chatsa = await Chat.find({ usera: userid }).populate('userb')
     // const chatsb = await Chat.find({ userb: userid }).populate('usera');
