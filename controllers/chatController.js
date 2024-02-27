@@ -10,12 +10,20 @@ const intializeChat = asyncHandler(async (req, res) => {
     const { requestid } = req.body;
     console.log(requestid)
     const userid = req.user._id;
-    const _request = await BloodRequest.findById(requestid).populate("initiator")
-    console.log(_request.initiator)
-    if (_request.chats.length == 0) {
-
-        console.log(_request.chats)
-        // res.json({donors: donors}).status(201)
+    const _request = await BloodRequest.findById().populate("initiator")
+    
+    const bloodRequest = await BloodRequest.findOne({
+        _id: mongoose.Types.ObjectId(requestid),
+        'chats.user': mongoose.Types.ObjectId(userid)
+    })
+    .populate({
+        path: 'chats.user',
+        model: 'User'
+    })
+    .populate('initiator');
+   
+    console.log(bloodRequest)
+    if (!bloodRequest) {
         const _chat = new Chat();
         let chat = {};
         chat.content = "chat reference";
@@ -36,11 +44,10 @@ const intializeChat = asyncHandler(async (req, res) => {
         _request.chats = [..._request.chats, chatRef];
         console.log(_request);
         await _request.save();
-
-        res.status(200).json({ chat: _chat })
         await sendNotification(_request.initiator.notification_token, "New Chat")
+        res.status(200).json({ chat: _chat })
     }
-    else if (_request.chats.length > 0) {
+    else {
         // const chat = await Chat.findOne({requestid: requestid, usera: req.user._id}).populate(['usera','userb'])
         const chat = await Chat.findOne({
             $or: [
@@ -58,9 +65,7 @@ const intializeChat = asyncHandler(async (req, res) => {
         let recipentName = chat.usera._id.toString() === req.user._id.toString() ? chat.userb.fullname : chat.usera.fullname;
         res.status(200).json({ chat: { ...chat._doc, recipentName } })
     }
-    else {
-        res.status(400).send({ msg: "Error" })
-    }
+   
 });
 
 
