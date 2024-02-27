@@ -42,7 +42,7 @@ const intializeChat = asyncHandler(async (req, res) => {
     }
     else if (_request.chats.length > 0) {
         // const chat = await Chat.findOne({requestid: requestid, usera: req.user._id}).populate(['usera','userb'])
-        const chat = await Chat.find({
+        const chat = await Chat.findOne({
             $or: [
                 {  usera: req.user._id },
                 {  userb: req.user._id }
