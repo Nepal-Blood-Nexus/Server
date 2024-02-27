@@ -47,7 +47,7 @@ const intializeChat = asyncHandler(async (req, res) => {
                 { requestid: requestid, usera: req.user._id },
                 { requestid: requestid, userb: req.user._id }
             ]
-        }).populate(['usera', 'userb']);
+        }).populate(['usera', 'userb','requestid']);
         let recipentName = chat.usera._id.toString() === req.user._id.toString() ? chat.userb.fullname : chat.usera.fullname;
         res.status(200).json({ chat: { ...chat._doc, recipentName } })
     }
