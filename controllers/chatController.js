@@ -60,11 +60,18 @@ const intializeChat = asyncHandler(async (req, res) => {
 
 const getMyChats = asyncHandler(async (req, res) => {
     const userid = req.user._id;
-    const chatsa = await Chat.find({ usera: userid }).populate('userb')
-    const chatsb = await Chat.find({ userb: userid }).populate('usera');
-    const chatsc = chatsa.concat(chatsb);
+    const chat = await Chat.findOne({
+        $or: [
+            { requestid: requestid, usera: req.user._id },
+            { requestid: requestid, userb: req.user._id }
+        ]
+    }).populate(['usera', 'userb','requestid']);
+
+    // const chatsa = await Chat.find({ usera: userid }).populate('userb')
+    // const chatsb = await Chat.find({ userb: userid }).populate('usera');
+    // const chatsc = chatsa.concat(chatsb);
     let allchats = [];
-    chatsc.forEach((chat) => {
+    chat.forEach((chat) => {
         let recipentName = chat.usera._id.toString() === req.user._id.toString() ? chat.userb.fullname : chat.usera.fullname;
         allchats.push({ ...chat._doc, recipentName });
     });
