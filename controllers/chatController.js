@@ -11,7 +11,7 @@ const intializeChat = asyncHandler(async (req, res) => {
     const { requestid } = req.body;
     console.log(requestid)
     const userid = req.user._id;
-    const _request = await BloodRequest.findById().populate("initiator")
+  
     
     const bloodRequest = await BloodRequest.findOne({
         _id:  new mongoose.Types.ObjectId(requestid),
@@ -24,37 +24,9 @@ const intializeChat = asyncHandler(async (req, res) => {
     .populate('initiator');
    
     console.log(bloodRequest)
-    if (!bloodRequest) {
-        const _chat = new Chat();
-        let chat = {};
-        chat.content = "chat reference";
-        chat.author = userid;
-        chat.type = "info";
-        _chat.requestid = requestid;
-        _chat.usera = userid;
-        _chat.userb = _request.initiator;
-        _chat.message = [..._chat.message, chat];
-        _chat.recipentName = _request.initiator.fullname;
-
-        await _chat.save();
-
-        const chatRef = {
-            user: userid,
-            chat: _chat._id
-        }
-        _request.chats = [..._request.chats, chatRef];
-        console.log(_request);
-        await _request.save();
-        await sendNotification(_request.initiator.notification_token, "New Chat")
-        res.status(200).json({ chat: _chat })
-    }
-    else {
-        // const chat = await Chat.findOne({requestid: requestid, usera: req.user._id}).populate(['usera','userb'])
+    if (bloodRequest) {
         const chat = await Chat.findOne({
-            $or: [
-                {  usera: req.user._id },
-                {  userb: req.user._id }
-            ]
+           requestid: requestid,
         }).populate(['usera', 'userb']).populate({
             path: 'requestid',
             populate: {
@@ -65,6 +37,33 @@ const intializeChat = asyncHandler(async (req, res) => {
     
         let recipentName = chat.usera._id.toString() === req.user._id.toString() ? chat.userb.fullname : chat.usera.fullname;
         res.status(200).json({ chat: { ...chat._doc, recipentName } })
+    }
+    else {
+        // const chat = await Chat.findOne({requestid: requestid, usera: req.user._id}).populate(['usera','userb'])
+     
+
+        const _chat = new Chat();
+        let chat = {};
+        chat.content = "chat reference";
+        chat.author = userid;
+        chat.type = "info";
+        _chat.requestid = requestid;
+        _chat.usera = userid;
+        _chat.userb = bloodRequest.initiator;
+        _chat.message = [..._chat.message, chat];
+        _chat.recipentName = bloodRequest.initiator.fullname;
+
+        await _chat.save();
+
+        const chatRef = {
+            user: userid,
+            chat: _chat._id
+        }
+        bloodRequest.chats = [...bloodRequest.chats, chatRef];
+        console.log(bloodRequest);
+        await bloodRequest.save();
+        await sendNotification(bloodRequest.initiator.notification_token, "New Chat")
+        res.status(200).json({ chat: _chat })
     }
    
 });
