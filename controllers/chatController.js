@@ -40,7 +40,9 @@ const intializeChat = asyncHandler(async (req, res) => {
     }
     else {
         // const chat = await Chat.findOne({requestid: requestid, usera: req.user._id}).populate(['usera','userb'])
-     
+        const bloodRequest = await BloodRequest.findOne({
+            _id:  new mongoose.Types.ObjectId(requestid),
+        });
 
         const _chat = new Chat();
         let chat = {};
