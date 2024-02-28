@@ -49,7 +49,7 @@ const intializeChat = asyncHandler(async (req, res) => {
         chat.content = "chat reference";
         chat.author = userid;
         chat.type = "info";
-        _chat.requestid = requestid;
+        _chat.requestid = bloodRequest;
         _chat.usera = userid;
         _chat.userb = bloodRequest.initiator;
         _chat.message = [..._chat.message, chat];
@@ -62,7 +62,7 @@ const intializeChat = asyncHandler(async (req, res) => {
             chat: _chat._id
         }
         bloodRequest.chats = [...bloodRequest.chats, chatRef];
-        console.log(bloodRequest);
+       
         await bloodRequest.save();
         await sendNotification(bloodRequest.initiator.notification_token, "New Chat")
         res.status(200).json({ chat: _chat })
