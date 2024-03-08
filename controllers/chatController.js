@@ -108,6 +108,7 @@ const sendMessage = asyncHandler(async (req, res) => {
     chat.content = msg;
     chat.author = req.user._id;
     chat.type = "text";
+    chat.chatid = chatid;
     _chat.message = [..._chat.message, chat];
     await _chat.save();
     res.status(200).send("sent");
