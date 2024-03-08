@@ -12,7 +12,6 @@ const intializeChat = asyncHandler(async (req, res) => {
     console.log(requestid)
     const userid = req.user._id;
   
-    
     const bloodRequest = await BloodRequest.findOne({
         _id:  new mongoose.Types.ObjectId(requestid),
         'chats.user': new mongoose.Types.ObjectId(userid)
@@ -118,8 +117,18 @@ const sendMessage = asyncHandler(async (req, res) => {
 
 
 
+
+const getChat = asyncHandler(async (req,res)=>{
+    const {chatid} = req.params;
+    const chats = await Chat.findById(chatid).populate('requestid');
+    res.json(chats);
+})
+
+
+
 module.exports = {
     intializeChat,
     getMyChats,
-    sendMessage
+    sendMessage,
+    getChat
 };
