@@ -120,8 +120,9 @@ const sendMessage = asyncHandler(async (req, res) => {
 
 const getChat = asyncHandler(async (req,res)=>{
     const {chatid} = req.params;
-    const chats = await Chat.findById(chatid).populate('requestid');
-    res.json(chats);
+    const chats = await Chat.findById(chatid).populate(['requestid','usera','userb']);
+    let recipentName = chats.usera._id.toString() === req.user._id.toString() ? chats.userb.fullname : chats.usera.fullname;
+    res.json({chat:{...chats, recipentName}});
 })
 
 
