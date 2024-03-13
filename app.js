@@ -43,6 +43,7 @@ const adminRouter = require("./routes/adminRoute")
 const bloodRequestRouter = require("./routes/bloodRequestRoute")
 const placeRouter = require("./routes/placesRoute")
 const chatRouter = require("./routes/chatRoute")
+const infoRouter = require('./routes/infoRouter.js')
 
 
 app.use("/static", express.static(path.join(__dirname, "static")));
@@ -53,6 +54,8 @@ app.use("/api/request",bloodRequestRouter)
 app.use("/api/places",placeRouter)
 app.use("/api/places",placeRouter)
 app.use("/api/chat", chatRouter)
+app.use("/api/info", infoRouter)
+
 
 
 

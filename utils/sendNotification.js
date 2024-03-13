@@ -1,6 +1,6 @@
 const { default: axios } = require("axios")
 
-module.exports.sendNotification = async (userToken,message) => {
+module.exports.sendNotification = async (userToken,message,br=true,title) => {
     console.log("sending notification", userToken)
     axios.post("https://fcm.googleapis.com/fcm/send",
         {
@@ -8,7 +8,7 @@ module.exports.sendNotification = async (userToken,message) => {
             "collapse_key": "Open",
             "priority": "high",
             "notification": {
-                "title": "Blood Request",
+                "title": br ?  "Blood Request":title,
                 "body": message
             },
             "sound":"alert.wav"
