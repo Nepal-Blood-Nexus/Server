@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const generateToken = require("../modules/token");
 const User = require("../models/user");
 const { generateInsights, getInsights } = require("../utils/insightsalgo");
+const { sendNotification } = require("../utils/sendNotification");
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -159,6 +160,8 @@ const updateUser = asyncHandler(async (req, res) => {
         blobulin,
       })
       const _updatedUser = await user.save();
+
+      sendNotification([_updatedUser.notification_token],"Your blood insights being prepared",false,"Blood Insights being prepared")
       
       res.status(201).json({
       success: true,
@@ -166,7 +169,6 @@ const updateUser = asyncHandler(async (req, res) => {
       user: _updatedUser,
       token: generateToken(_updatedUser._id),
     });
-    return getInsights(_updatedUser);
     }
 
     

@@ -1,4 +1,6 @@
-const { sendNotification } = require("./sendNotification")
+const expressAsyncHandler = require("express-async-handler");
+const { sendNotification } = require("./sendNotification");
+const User = require("../models/user");
 
 
 const info = {
@@ -78,6 +80,7 @@ const normal = {
 
 const createUserData = (profile) => {
   const insights = {};
+  
 
   // Function to compare user value with normal range
   const isNormal = (value, normalRange) => {
@@ -99,8 +102,8 @@ const createUserData = (profile) => {
 
   // Function to generate insights for each attribute
   const generateInsights = (attribute, value, normal) => {
+    
     const attributeInsights = {};
-
     // Compare user value with normal values
     if (isNormal(value, normal)) {
       attributeInsights.status = "Normal";
@@ -115,48 +118,36 @@ const createUserData = (profile) => {
   };
 
   // Iterate through each blood attribute in the user's profile
-  Object.keys(profile).forEach(attribute => {
+  
+  // console.log(profile);
+  Object.keys(profile._doc).forEach(attribute => {
+    
     const value = profile[attribute];
     const normalValues = normal[attribute];
-    if (attribute == "rbc" || attribute == "hct" ||attribute == "creatinine") {
-      // console.log(attribute,value, normalValues)
-      // TODO: check gender and generate insigths, suppose gender is "male"
-      insights[attribute] = generateInsights(attribute, value, normalValues["male"]);
-    }else{
-
-      // Generate insights for the current blood attribute
-      insights[attribute] = generateInsights(attribute, value, normalValues);
-    }
+   if(attribute !="blood_group" || attribute !="gender" || attribute !="weight"){
+     if (attribute == "rbc" || attribute == "hct" ||attribute == "creatinine") {
+        console.log(attribute, value, normalValues);
+       // console.log(attribute,value, normalValues)
+       // TODO: check gender and generate insigths, suppose gender is "male"
+       insights[attribute] = generateInsights(attribute, value, normalValues["male"]);
+     }else{
+       // Generate insights for the current blood attribute
+       insights[attribute] = generateInsights(attribute, value, normalValues);
+     }
+   }
   });
 
   return insights;
 };
 
-// Example usage:
-const user = {
-  profile: {
-    bp: { systolic: 110, diastolic: 70 },
-    rbc: 5.0,
-    hct: 40.0,
-    mcv: 90,
-    // mch: 30,
-    // mchc: 34,
-    // glucose: { fasting: 85, postprandial: 120 },
-    // creatinine: 0.8,
-    // bun: 15,
-    // protein: 7.5,
-    // albumin: 4.2,
-    // globulin: 2.2,
-    // Add other blood attributes as needed
-  },
-  gender: "male", // Assume you have a gender attribute in the user's profile
-};
 
 
-
-
-module.exports.getInsights = async (user)=>{
-  const userInsights = createUserData(user.profile);
-  sendNotification(user.notification_token,"Your blood insights being prepared",false,"Blood Insights")
-}
+module.exports.getInsights = expressAsyncHandler(async(req,res)=>{
+  const {id} = req.params;
+  const user = await User.findOne({_id: id});
+  const _ = user.profile[0];
+  const userInsights = createUserData(_);
+  res.json(userInsights)
+  
+}) 
 
