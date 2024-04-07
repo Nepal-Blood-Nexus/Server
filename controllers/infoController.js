@@ -90,10 +90,6 @@ const getAllinfo = asyncHandler(async (req, res) => {
     
 });
 
-
-
-
-
 module.exports = {
     getAllinfo
 };
