@@ -127,13 +127,28 @@ const getUsersByBloodGroup = asyncHandler(async(req,res)=>{
         }
     ]);
 
-    const result = {
-        bloodGroupCounts,
-        bloodRequestCounts
-    };
+    // Merge the counts for each blood group
+    const combinedCounts = {};
+    bloodGroupCounts.forEach(({ bloodGroup, count }) => {
+        combinedCounts[bloodGroup] = {
+            bloodGroup,
+            userCount: count,
+            requestCount: 0
+        };
+    });
+    bloodRequestCounts.forEach(({ bloodGroup, count }) => {
+        if (combinedCounts[bloodGroup]) {
+            combinedCounts[bloodGroup].requestCount = count;
+        } else {
+            combinedCounts[bloodGroup] = {
+                bloodGroup,
+                userCount: 0,
+                requestCount: count
+            };
+        }
+    });
 
-    
-        res.json(result);
+    res.json(Object.values(combinedCounts));
     });
 
 module.exports = {
