@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const generateToken = require("../modules/token");
 const User = require("../models/user");
-const { generateInsights } = require("../utils/insightsalgo");
+const { generateInsights, getInsights } = require("../utils/insightsalgo");
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -166,7 +166,7 @@ const updateUser = asyncHandler(async (req, res) => {
       user: _updatedUser,
       token: generateToken(_updatedUser._id),
     });
-    return generateInsights(_updatedUser);
+    return getInsights(_updatedUser);
     }
 
     
