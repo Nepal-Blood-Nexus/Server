@@ -92,53 +92,46 @@ const getAllinfo = asyncHandler(async (req, res) => {
 
 const getUsersByBloodGroup = asyncHandler(async(req,res)=>{
  
-        const bloodGroupCounts = await User.aggregate([
-            {
-                $group: {
-                    _id: "$bloodGroup",
-                    count: { $sum: 1 }
-                }
-            },
-            {
-                $project: {
-                    bloodGroup: "$_id",
-                    count: 1,
-                    _id: 0
-                }
+    const bloodGroupCounts = await User.aggregate([
+        {
+            $unwind: "$profile"
+        },
+        {
+            $group: {
+                _id: "$profile.blood_group",
+                count: { $sum: 1 }
             }
-        ]);
-    
-        const bloodRequestCounts = await BloodRequest.aggregate([
-            {
-                $lookup: {
-                    from: "users",
-                    localField: "userId",
-                    foreignField: "_id",
-                    as: "user"
-                }
-            },
-            {
-                $unwind: "$user"
-            },
-            {
-                $group: {
-                    _id: "$user.bloodGroup",
-                    count: { $sum: 1 }
-                }
-            },
-            {
-                $project: {
-                    bloodGroup: "$_id",
-                    count: 1,
-                    _id: 0
-                }
+        },
+        {
+            $project: {
+                bloodGroup: "$_id",
+                count: 1,
+                _id: 0
             }
-        ]);
-    
-        const result = {
-            bloodGroupCounts,
-            bloodRequestCounts
-        };
+        }
+    ]);
+
+    const bloodRequestCounts = await BloodRequest.aggregate([
+        {
+            $group: {
+                _id: "$blood_group",
+                count: { $sum: 1 }
+            }
+        },
+        {
+            $project: {
+                bloodGroup: "$_id",
+                count: 1,
+                _id: 0
+            }
+        }
+    ]);
+
+    const result = {
+        bloodGroupCounts,
+        bloodRequestCounts
+    };
+
     
         res.json(result);
     });
