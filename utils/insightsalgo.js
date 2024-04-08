@@ -105,16 +105,17 @@ const createUserData = (profile) => {
     
     const attributeInsights = {};
     // Compare user value with normal values
-    if (isNormal(value, normal)) {
-      attributeInsights.status = "Normal";
-    } else {
-      attributeInsights.status = "Not Normal";
-      // Add medication and tips logic here based on the specific blood attribute
-      // attributeInsights.medication = ...;
-      attributeInsights.tips = info[attribute]
+    
+    if(attribute!="_id" || attribute!="blood_group"){
+      if (!isNormal(value, normal)) {
+        attributeInsights.status = "Not Normal";
+        // Add medication and tips logic here based on the specific blood attribute
+        // attributeInsights.medication = ...;
+        attributeInsights.tips = info[attribute]
+      }
+  
+      return attributeInsights;
     }
-
-    return attributeInsights;
   };
 
   // Iterate through each blood attribute in the user's profile
