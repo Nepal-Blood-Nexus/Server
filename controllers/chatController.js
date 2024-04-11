@@ -95,10 +95,10 @@ const getMyChats = asyncHandler(async (req, res) => {
         allchats.push({ ...chat._doc, recipentName });
     });
 
-    console.log(allchats)
+    
 
     // let recipentName = chat.usera._id.toString() === req.user._id.toString() ? chat.userb.fullname : chat.usera.fullname;
-    res.status(200).json({ chats: allchats })
+    res.status(200).json({ chats: allchats.reverse() })
 })
 
 const sendMessage = asyncHandler(async (req, res) => {
